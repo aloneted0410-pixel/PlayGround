@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#101513" />
+  <title>V O X E L — Three-dimensional chess</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Voxel home"><span class="brand-mark">V</span><span>VOXEL<span class="brand-dot">.</span></span></a>
+      <div class="top-center"><span class="live-dot"></span> LOCAL MATCH <span class="top-divider">/</span> <span>3D CHESS</span></div>
+      <button class="icon-button" id="rulesButton" aria-label="How to play" title="How to play"><span>?</span></button>
+    </header>
+
+    <main class="layout">
+      <section class="play-area">
+        <div class="match-heading">
+          <div>
+            <div class="eyebrow">A new dimension of strategy</div>
+            <h1>Chess, <span>unboxed.</span></h1>
+            <p class="subtitle">64 squares was never enough.</p>
+          </div>
+          <div class="match-tag"><span class="cube-icon">⬡</span> 8 × 8 × 8 <span class="tag-separator"></span> 512 CELLS</div>
+        </div>
+
+        <div class="board-card">
+          <div class="board-toolbar">
+            <div class="layer-title"><span class="layer-indicator"></span><span id="layerLabel">LAYER 01</span><span class="layer-coord" id="layerCoord">z = 0</span></div>
+            <div class="board-tools"><span class="board-hint" id="boardHint">Select a piece to see its paths</span><button class="text-button" id="flipButton" title="Flip the board">↻ <span>FLIP</span></button></div>
+          </div>
+          <div class="board-frame">
+            <div class="rank-labels" id="rankLabels" aria-hidden="true"></div>
+            <div class="board-grid" id="board" role="grid" aria-label="Chess board layer"></div>
+            <div class="file-labels" id="fileLabels" aria-hidden="true"></div>
+          </div>
+          <div class="board-footer">
+            <div class="key-help"><kbd>←</kbd><kbd>→</kbd> change layer <span class="help-divider">·</span> <kbd>Esc</kbd> deselect</div>
+            <div class="board-foot-right"><span class="move-pulse"></span><span id="turnFoot">WHITE TO MOVE</span></div>
+          </div>
+        </div>
+
+        <div class="layer-panel">
+          <div class="layer-panel-head"><div><span class="eyebrow">Navigate the cube</span><div class="layer-panel-title">Depth layers</div></div><div class="layer-ends"><span>WHITE SIDE</span><span>BLACK SIDE</span></div></div>
+          <div class="layer-track-wrap"><div class="layer-end-label">W</div><div class="layer-track" id="layerTrack" aria-label="Choose a depth layer"></div><div class="layer-end-label black">B</div></div>
+          <div class="layer-scale"><span>NEAR</span><span>FAR</span></div>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <section class="turn-card" id="turnCard">
+          <div class="turn-card-top"><span class="eyebrow">Now playing</span><span class="round-label" id="roundLabel">MOVE 01</span></div>
+          <div class="turn-player"><span class="turn-piece" id="turnPiece">♙</span><div><div class="player-name" id="playerName">White</div><div class="player-sub" id="playerSub">Your move</div></div><span class="turn-arrow">↗</span></div>
+          <div class="turn-progress"><span id="turnProgress"></span></div>
+          <div class="check-alert" id="checkAlert" hidden>♛ <span>YOUR KING IS IN CHECK</span></div>
+        </section>
+
+        <div class="sidebar-section captured-section"><div class="section-heading"><span>Captured pieces</span><span class="section-index">01</span></div><div class="capture-row"><div class="capture-label"><span class="mini-side white-mini"></span> WHITE <span class="capture-count" id="whiteCaptureCount">0</span></div><div class="captured-pieces" id="whiteCaptured"></div></div><div class="capture-row"><div class="capture-label"><span class="mini-side black-mini"></span> BLACK <span class="capture-count" id="blackCaptureCount">0</span></div><div class="captured-pieces" id="blackCaptured"></div></div></div>
+
+        <div class="sidebar-section moves-section"><div class="section-heading"><span>Move history</span><span class="section-index">02</span></div><div class="move-list" id="moveList"><div class="empty-moves"><span>01</span><div><b>The cube awaits.</b><br>Make the first move.</div></div></div></div>
+
+        <div class="sidebar-bottom"><button class="undo-button" id="undoButton" disabled><span>↶</span> UNDO MOVE</button><button class="new-game-button" id="newGameButton"><span>＋</span> NEW GAME</button></div>
+        <div class="side-note"><span class="note-mark">✳</span> Every direction is a new possibility.</div>
+      </aside>
+    </main>
+
+    <footer class="footer"><span>VOXEL CHESS <span class="footer-dot">●</span> MADE FOR THE THIRD DIMENSION</span><span>LOCAL PASS &amp; PLAY <span class="footer-dot">●</span> v1.0</span></footer>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-close" id="modalClose" aria-label="Close">×</button><div class="eyebrow">The rulebook</div><h2 id="modalTitle">Think in <span>three dimensions.</span></h2><p class="modal-intro">Two armies. One cube. Your pieces can travel through all eight layers—not just across a board.</p><div class="rule-grid"><article><span class="rule-glyph">♜</span><div><b>Rooks &amp; queens</b><p>Slide along straight lines through any of the cube’s three axes. Bishops also travel along 2D and 3D diagonals.</p></div></article><article><span class="rule-glyph">♘</span><div><b>Knight &amp; king</b><p>Knights leap in 3D L-shapes. Kings step one cell in any direction. Keep yours safe.</p></div></article><article><span class="rule-glyph">♙</span><div><b>Pawns</b><p>White advances toward higher layers; Black toward lower ones. Capture diagonally in the next layer. Reach the far face to promote.</p></div></article><article><span class="rule-glyph">⌗</span><div><b>Explore the cube</b><p>Use the layer strip or arrow keys to inspect each 8×8 slice. Click a glowing square to complete a move across layers.</p></div></article></div><div class="modal-foot">Standard check rules apply. Pawns promote to queens. Castling is not used in Voxel Chess.</div></section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="game.js"></script>
+</body>
+</html>
